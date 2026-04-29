@@ -1,0 +1,9 @@
+name = "wawp"
+main = "src/worker/index.ts"
+compatibility_date = "2024-01-01"
+
+[env.production]
+route = { pattern = "wawp.*", zone_name = "your-domain.com" }
+
+[env.staging]
+route = { pattern = "staging-wawp.*", zone_name = "your-domain.com" }
