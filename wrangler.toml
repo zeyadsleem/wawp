@@ -2,8 +2,15 @@ name = "wawp"
 main = "src/worker/index.ts"
 compatibility_date = "2024-01-01"
 
+[vars]
+DATABASE_URL = "postgresql://neondb_owner:npg_zQbVCKW9hwf4@ep-square-lab-ajlk0dwj-pooler.c-3.us-east-2.aws.neon.tech/neondb?channel_binding=require&sslmode=require"
+
 [env.production]
-route = { pattern = "wawp.*", zone_name = "your-domain.com" }
+routes = [
+  { pattern = "wawp.zeyadsleem.workers.dev", zone_name = "zeyadsleem.workers.dev" }
+]
 
 [env.staging]
-route = { pattern = "staging-wawp.*", zone_name = "your-domain.com" }
+routes = [
+  { pattern = "wawp-staging.zeyadsleem.workers.dev", zone_name = "zeyadsleem.workers.dev" }
+]

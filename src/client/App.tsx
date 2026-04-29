@@ -1,29 +1,58 @@
-import { useState } from 'react';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { AuthProvider, useAuth } from './context/AuthContext';
+import { LoginPage } from './pages/Login';
+import { DashboardPage } from './pages/Dashboard';
+import { EditorPage } from './pages/Editor';
 
-function App() {
-  const [count, setCount] = useState(0);
+function ProtectedRoute({ children }: { children: React.ReactNode }) {
+  const { user, loading } = useAuth();
 
-  return (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-      <div className="text-center">
-        <h1 className="text-4xl font-bold text-gray-900 mb-4">
-          WAWP
-        </h1>
-        <p className="text-lg text-gray-600 mb-8">
-          Write Anything, Publish Everywhere
-        </p>
-        <div className="p-4 bg-white rounded-lg shadow">
-          <p className="text-sm text-gray-500 mb-2">Coming Soon</p>
-          <button
-            onClick={() => setCount(count + 1)}
-            className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition"
-          >
-            Count: {count}
-          </button>
-        </div>
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-gray-500">Loading...</div>
       </div>
-    </div>
+    );
+  }
+
+  if (!user) {
+    return <Navigate to="/login" replace />;
+  }
+
+  return <>{children}</>;
+}
+
+function AppRoutes() {
+  return (
+    <Routes>
+      <Route path="/login" element={<LoginPage />} />
+      <Route
+        path="/dashboard"
+        element={
+          <ProtectedRoute>
+            <DashboardPage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/editor/:id?"
+        element={
+          <ProtectedRoute>
+            <EditorPage />
+          </ProtectedRoute>
+        }
+      />
+      <Route path="/" element={<Navigate to="/dashboard" replace />} />
+    </Routes>
   );
 }
 
-export default App;
+export default function App() {
+  return (
+    <BrowserRouter>
+      <AuthProvider>
+        <AppRoutes />
+      </AuthProvider>
+    </BrowserRouter>
+  );
+}
