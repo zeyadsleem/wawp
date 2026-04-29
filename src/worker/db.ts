@@ -1,8 +1,12 @@
 import { neon } from '@neondatabase/serverless';
 
-const DATABASE_URL = process.env.DATABASE_URL || 'postgresql://neondb_owner:npg_zQbVCKW9hwf4@ep-square-lab-ajlk0dwj-pooler.c-3.us-east-2.aws.neon.tech/neondb?channel_binding=require&sslmode=require';
+const DEFAULT_DATABASE_URL = 'postgresql://neondb_owner:npg_zQbVCKW9hwf4@ep-square-lab-ajlk0dwj-pooler.c-3.us-east-2.aws.neon.tech/neondb?channel_binding=require&sslmode=require';
 
-export const sql = neon(DATABASE_URL);
+export function createSql(databaseUrl?: string) {
+  return neon(databaseUrl || DEFAULT_DATABASE_URL);
+}
+
+export const sql = neon(DEFAULT_DATABASE_URL);
 
 export interface User {
   id: string;

@@ -2,7 +2,7 @@ import { jwtVerify, SignJWT } from 'jose';
 import type { User } from './db';
 
 const JWT_SECRET = new TextEncoder().encode(
-  process.env.JWT_SECRET || 'wawp-super-secret-key-change-in-production'
+  'wawp-dev-secret-key-for-local-development-only'
 );
 
 export async function createToken(user: User): Promise<string> {
